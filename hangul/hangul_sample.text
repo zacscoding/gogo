@@ -1,0 +1,31 @@
+//package main
+//
+//import "fmt"
+//
+//func main() {
+//	// for1()
+//	for2()
+//}
+//
+//func for1() {
+//	/*
+//	0 44032
+//	3 45208
+//	6 45796
+//	9
+//	*/
+//	// i : 바이트 코드 위치 / r : 각 문자
+//	// 가,나,다 는 각각 3바이트 => i = 0, 3, 6
+//	// len("가나다") == 9 바이트
+//	for i, r := range "가나다" {
+//		fmt.Println(i, r)
+//	}
+//
+//	fmt.Println(len("가나다"))
+//}
+//
+//func for2() {
+//	for _, r := range "가갛힣" {
+//		fmt.Println(string(r), r)
+//	}
+//}

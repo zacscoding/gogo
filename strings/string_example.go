@@ -12,7 +12,13 @@ func main() {
 	// modifyBytes()
 	// strCat()
 	// strToNumeric()
-	strToNumeric2()
+	// strToNumeric2()
+	// exampleArray()
+	// exampleSlice()
+	// sliceAppend()
+	// sliceCap()
+	// sliceCopy()
+	addAndDelete()
 }
 
 func printBytes() {
@@ -97,11 +103,178 @@ func strToNumeric() {
 
 func strToNumeric2() {
 	var num int
-	fmt.Sscanf("57", "%d", &num)	// num == 57
+	fmt.Sscanf("57", "%d", &num) // num == 57
 	fmt.Println("num : ", num)
 	var s string
-	s = fmt.Sprint(3.14)	// s = "3.14"
+	s = fmt.Sprint(3.14) // s = "3.14"
 	fmt.Println("s : ", s)
-	s = fmt.Sprintf("%x", 13402077)	// s == "cc7fdd"
+	s = fmt.Sprintf("%x", 13402077) // s == "cc7fdd"
 	fmt.Println("s : ", s)
+}
+
+func exampleArray() {
+	// fruits := [3]string{"apple", "banana", "tomato"}
+	fruits := [...]string{"apple", "banana", "tomato"}
+
+	// _ : index | fruit : value
+	for _, fruit := range fruits {
+		fmt.Printf("%s is delicious :)\n", fruit)
+	}
+
+	// Output
+	//apple is delicious :)
+	//banana is delicious :)
+	//tomato is delicious :)
+}
+
+func exampleSlice() {
+	// fruits == nill
+	// var fruits []string
+
+	// fruits == 빈 string 3개
+	fruits := make([]string, 3)
+	fmt.Printf("fruits[1] : %s", fruits[1])
+
+	nums := []int{1, 2, 3, 4, 5}
+	fmt.Println(nums)
+	fmt.Println(nums[1:3])
+	fmt.Println(nums[2:])
+	fmt.Println(nums[:3])
+	fmt.Println(nums[:len(nums)-1])
+
+	// Output
+	// fruits[1] : [1 2 3 4 5]
+	// [2 3]
+	// [3 4 5]
+	// [1 2 3]
+	// [1 2 3 4]
+}
+
+func sliceAppend() {
+	fruits := []string{"apple", "banana", "tomato"}
+	fmt.Println(fruits)
+
+	fruits = append(fruits, "grape", "strawberry")
+	fmt.Println(fruits)
+
+	f1 := []string{"apple", "banana", "tomato"}
+	f2 := []string{"grape", "strawberry"}
+
+	f3 := append(f1, f2...)
+	f4 := append(f1[:2], f2...)
+
+	fmt.Println(f3)
+	fmt.Println(f4)
+
+	// Output
+	// [apple banana tomato]
+	// [apple banana tomato grape strawberry]
+	// [apple banana tomato grape strawberry]
+	// [apple banana grape strawberry]
+}
+
+func sliceCap() {
+	nums := []int{1, 2, 3, 4, 5}
+	fmt.Println(nums)
+	fmt.Println("len : ", len(nums))
+	fmt.Println("cap : ", cap(nums))
+	fmt.Println()
+
+	sliced1 := nums[:3]
+	fmt.Println(sliced1)
+	fmt.Println("len : ", len(sliced1))
+	fmt.Println("cap : ", cap(sliced1))
+	fmt.Println()
+
+	sliced2 := nums[2:]
+	fmt.Println(sliced2)
+	fmt.Println("len : ", len(sliced2))
+	fmt.Println("cap : ", cap(sliced2))
+	fmt.Println()
+
+	sliced3 := sliced1[:4]
+	fmt.Println(sliced3)
+	fmt.Println("len : ", len(sliced3))
+	fmt.Println("cap : ", cap(sliced3))
+	fmt.Println()
+
+	nums[2] = 100
+	fmt.Println(nums, sliced1, sliced2, sliced3)
+
+	// Output:
+	//[1 2 3 4 5]
+	//len :  5
+	//cap :  5
+	//
+	//[1 2 3]
+	//len :  3
+	//cap :  5
+	//
+	//[3 4 5]
+	//len :  3
+	//cap :  3
+	//
+	//[1 2 3 4]
+	//len :  4
+	//cap :  5
+	//
+	//[1 2 100 4 5] [1 2 100] [100 4 5] [1 2 100 4]
+}
+
+func sliceCopy() {
+	src := []int{30, 20, 50, 10, 40}
+	dest := make([]int, len(src))
+
+	for i := range src {
+		dest[i] = src[i]
+	}
+
+	fmt.Println(dest)
+	// [30 20 50 10 40]
+
+	dest2 := make([]int, len(src)-1)
+
+	if n := copy(dest2, src); n != len(src) {
+		fmt.Println("복사가 덜 됐습니다.")
+	}
+}
+
+func addAndDelete() {
+	a := []int{1, 2, 3, 4, 5, 6}
+
+	a = addArray2(a, 3, 9)
+	fmt.Println(a)
+
+	b := []int{1, 2, 3, 4, 5}
+	b = deleteArray(b, 2, 2)
+
+	fmt.Println(b)
+
+	// output
+	// [1 2 3 9 4 5 6]
+	// [1 2 5]
+}
+
+func addArray(array []int, idx int, value int) []int {
+	if idx < len(array) {
+		array = append(array[:idx+1], array[idx:]...)
+		array[idx] = value
+	} else {
+		array = append(array, value)
+	}
+
+	return array
+}
+
+func addArray2(array []int, idx int, value int) []int {
+	array = append(array, value)
+
+	copy(array[idx+1:], array[idx:])
+	array[idx] = value
+
+	return array
+}
+
+func deleteArray(array []int, idx int, count int) []int {
+	return append(array[:idx], array[idx+count])
 }
